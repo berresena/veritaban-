@@ -1,0 +1,125 @@
+
+1. GRANT / REVOKE - Yetkilendirme
+---------------------------------
+GRANT SELECT, INSERT ON Takimlar TO kullanici_adi;
+REVOKE INSERT ON Takimlar FROM kullanici_adi;
+
+2. Bütünlük Kısıtları - Constraints
+-----------------------------------
+CREATE TABLE Ogrenci (
+  ogr_id NUMBER PRIMARY KEY,
+  ad VARCHAR2(30) NOT NULL,
+  not_ort NUMBER CHECK (not_ort BETWEEN 0 AND 100)
+);
+
+3. Değişken Tanımlama ve Atama
+-------------------------------
+DECLARE
+  ogr_adi VARCHAR2(30);
+  puan NUMBER(3);
+BEGIN
+  ogr_adi := 'Ahmet';
+  puan := 85;
+END;
+
+4. Fonksiyon
+------------
+CREATE OR REPLACE FUNCTION toplam_puan RETURN NUMBER IS
+  tp NUMBER;
+BEGIN
+  SELECT SUM(puan) INTO tp FROM Takimlar;
+  RETURN tp;
+END;
+
+5. Prosedür
+-----------
+CREATE OR REPLACE PROCEDURE yazdir IS
+BEGIN
+  DBMS_OUTPUT.PUT_LINE('Prosedür Çalıştı');
+END;
+
+6. Sequence - Sıralı ID Üretimi
+-------------------------------
+CREATE SEQUENCE takim_seq START WITH 1 INCREMENT BY 1;
+INSERT INTO Takimlar (takim_id, takim_adi) VALUES (takim_seq.NEXTVAL, 'Galatasaray');
+
+7. Hata Yönetimi
+----------------
+BEGIN
+  SELECT puan INTO v_puan FROM Takimlar WHERE takim_adi = 'Yok';
+EXCEPTION
+  WHEN NO_DATA_FOUND THEN
+    DBMS_OUTPUT.PUT_LINE('Kayıt bulunamadı.');
+END;
+
+8. Kullanıcı Tanımlı Hata
+--------------------------
+DECLARE
+  hata EXCEPTION;
+  sayi NUMBER := 5;
+BEGIN
+  IF sayi < 10 THEN
+    RAISE hata;
+  END IF;
+EXCEPTION
+  WHEN hata THEN
+    DBMS_OUTPUT.PUT_LINE('Hatalı sayı!');
+END;
+
+9. IF - ELSE - ELSEIF
+----------------------
+IF puan >= 90 THEN
+  DBMS_OUTPUT.PUT_LINE('Pekiyi');
+ELSIF puan >= 70 THEN
+  DBMS_OUTPUT.PUT_LINE('İyi');
+ELSE
+  DBMS_OUTPUT.PUT_LINE('Zayıf');
+END IF;
+
+10. CASE Yapısı
+---------------
+CASE puan
+  WHEN 100 THEN DBMS_OUTPUT.PUT_LINE('Mükemmel');
+  ELSE DBMS_OUTPUT.PUT_LINE('Normal');
+END CASE;
+
+11. LOOP ve EXIT
+-----------------
+DECLARE
+  sayi NUMBER := 0;
+BEGIN
+  LOOP
+    sayi := sayi + 1;
+    EXIT WHEN sayi > 5;
+    DBMS_OUTPUT.PUT_LINE(sayi);
+  END LOOP;
+END;
+
+12. WHILE Döngüsü
+------------------
+WHILE sayi < 5 LOOP
+  sayi := sayi + 1;
+END LOOP;
+
+13. FOR Döngüsü
+----------------
+FOR i IN 1..5 LOOP
+  DBMS_OUTPUT.PUT_LINE(i);
+END LOOP;
+
+14. GOTO Kullanımı
+-------------------
+BEGIN
+  GOTO etikettir;
+  DBMS_OUTPUT.PUT_LINE('Bu yazı çalışmaz');
+  <<etikettir>>
+  DBMS_OUTPUT.PUT_LINE('Etikete geldik');
+END;
+
+15. NULL Yapısı
+----------------
+IF puan < 50 THEN
+  NULL;
+ELSE
+  DBMS_OUTPUT.PUT_LINE('Geçti');
+END IF;
