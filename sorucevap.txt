@@ -1,0 +1,62 @@
+
+-- 1. ISCI Tablosu
+CREATE TABLE isci (
+    iscino      NUMBER PRIMARY KEY,
+    isciadi     VARCHAR2(50),
+    iscisoYadi  VARCHAR2(50),
+    isi         VARCHAR2(50),
+    muduru      VARCHAR2(50),
+    isbastar    DATE,
+    ucret       NUMBER(10,2)
+);
+
+-- 2. BOLUM Tablosu
+CREATE TABLE bolum (
+    bolumno     NUMBER PRIMARY KEY,
+    bolumadi    VARCHAR2(50),
+    yer         VARCHAR2(50)
+);
+
+-- 3. BOLUM_ISCI Tablosu
+CREATE TABLE bolum_isci (
+    bno         NUMBER,
+    iscino      NUMBER,
+    cal_tar_bas DATE,
+    cal_tar_bit DATE,
+    CONSTRAINT fk_bolum FOREIGN KEY (bno) REFERENCES bolum(bolumno),
+    CONSTRAINT fk_isci FOREIGN KEY (iscino) REFERENCES isci(iscino)
+);
+
+-- 4. UCRETORAN Tablosu
+CREATE TABLE ucretoran (
+    derece     VARCHAR2(20) PRIMARY KEY,
+    endusuuc   NUMBER(10,2),
+    enyükuc    NUMBER(10,2)
+);
+
+-- 5. ISCI Tablosuna Veri Ekleme
+INSERT INTO isci VALUES (3, 'Ali', 'Demir', 'Yazılımcı', 'Müdür Yılmaz', TO_DATE('01.03.2021','DD.MM.YYYY'), 28505.10);
+INSERT INTO isci VALUES (4, 'Ali', 'Demir', 'Yazılımcı', 'Müdür Yılmaz', TO_DATE('01.03.2021','DD.MM.YYYY'), 28505.10);
+INSERT INTO isci VALUES (1, 'Ahmet', 'Yılmaz', 'Teknisyen', 'Mehmet', TO_DATE('01.01.2022','DD.MM.YYYY'), 25000);
+INSERT INTO isci VALUES (5, 'Zeynep', 'Kara', 'Mühendis', 'Ahmet', TO_DATE('15.06.2020','DD.MM.YYYY'), 32000);
+INSERT INTO isci VALUES (6, 'Elif', 'Demir', 'Danışman', 'Ali', TO_DATE('25.09.2019','DD.MM.YYYY'), 28000);
+INSERT INTO isci VALUES (7, 'Mert', 'Kılıç', 'Analist', 'Zeynep', TO_DATE('01.05.2020','DD.MM.YYYY'), 27000);
+INSERT INTO isci VALUES (8, 'Ayşe', 'Çetin', 'Yazılımcı', 'Ahmet', TO_DATE('11.11.2021','DD.MM.YYYY'), 23000);
+INSERT INTO isci VALUES (9, 'Mehmet', 'Sarı', 'Veritabanı Uzmanı', 'Ali', TO_DATE('02.02.2023','DD.MM.YYYY'), 34000);
+INSERT INTO isci VALUES (10, 'Canan', 'Aydın', 'Sistem Analisti', 'Elif', TO_DATE('07.07.2022','DD.MM.YYYY'), 29000);
+
+-- 6. BOLUM Tablosuna Veri Ekleme
+INSERT INTO bolum VALUES (1, 'Yazılım', 'İstanbul');
+INSERT INTO bolum VALUES (2, 'Donanım', 'Ankara');
+INSERT INTO bolum VALUES (3, 'AR-GE', 'İzmir');
+
+-- 7. BOLUM_ISCI Tablosuna Veri Ekleme
+INSERT INTO bolum_isci VALUES (1, 3, TO_DATE('01.03.2021','DD.MM.YYYY'), NULL);
+INSERT INTO bolum_isci VALUES (1, 4, TO_DATE('01.03.2021','DD.MM.YYYY'), NULL);
+INSERT INTO bolum_isci VALUES (2, 1, TO_DATE('01.01.2022','DD.MM.YYYY'), NULL);
+INSERT INTO bolum_isci VALUES (3, 5, TO_DATE('15.06.2020','DD.MM.YYYY'), NULL);
+
+-- 8. UCRETORAN Tablosuna Veri Ekleme
+INSERT INTO ucretoran VALUES ('1. Derece', 30000, 50000);
+INSERT INTO ucretoran VALUES ('2. Derece', 20000, 29999);
+INSERT INTO ucretoran VALUES ('3. Derece', 10000, 19999);
